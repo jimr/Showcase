@@ -1,0 +1,7 @@
+dist/
+build/
+Showcase.egg-info
+
+*.sw[op]
+*.py[cod]
+.DS_Store
