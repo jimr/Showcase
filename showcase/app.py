@@ -12,13 +12,12 @@ from gunicorn.app.base import BaseApplication
 
 
 app = Flask(__name__)
-base = os.getenv('SHOWCASE_DIR', os.path.abspath(os.path.dirname(__file__)))
+base = os.getenv('SHOWCASE_DIR', os.getcwd())
 
 
 def _process_path(path):
-    rel = os.path.relpath(path, base)
-    if rel == '.':
-        rel = '..'
+    url = url_for('show', path=os.path.relpath(path, base))
+    name = os.path.basename(path)
 
     if os.path.isfile(path):
         size = humanize.filesize.naturalsize(os.path.getsize(path))
@@ -28,7 +27,7 @@ def _process_path(path):
     timestamp = datetime.datetime.fromtimestamp(os.path.getctime(path))
     date = humanize.time.naturaltime(timestamp)
 
-    return rel, size, date
+    return url, name, size, date
 
 
 @app.route('/')
@@ -44,20 +43,22 @@ def show(path=None):
     dirs = []
     files = []
 
+    # If we're not at the root, add a 'parent' dir
     if path is not None:
-        dirs.append(_process_path(base))
+        url, name, size, date = _process_path(os.path.dirname(full_path))
+        dirs.append([url, '..', size, date])
 
     for fname in os.listdir(full_path):
         if fname.startswith('.'):
             continue
 
         thing = os.path.join(full_path, fname)
-        rel, size, date = _process_path(thing)
+        url, name, size, date = _process_path(thing)
 
         if os.path.isfile(thing):
-            files.append([rel, size, date])
+            files.append([url, name, size, date])
         elif os.path.isdir(thing):
-            dirs.append([rel, size, date])
+            dirs.append([url, name, size, date])
 
     return render_template(
         'dir.html', path=path or '', files=files, dirs=dirs,
