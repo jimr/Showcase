@@ -2,6 +2,5 @@
 {% block title %}Viewing /{{ fname }}{% endblock %}
 
 {% block content %}
-<h1>Showcase: /{{ fname }}</h1>
-<pre><code>{{ body }}</code></pre> 
+<pre><code>{{ body.decode('utf-8') }}</code></pre> 
 {% endblock %}
