@@ -2,7 +2,7 @@
 History
 =======
 
-Unreleased changes
+0.3.3 (2017-03-08)
 ------------------
 * Bugfix
 
