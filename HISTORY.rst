@@ -2,6 +2,10 @@
 History
 =======
 
+Unreleased changes
+------------------
+* Added a Makefile for dev tasks (because I'm forgetful)
+
 0.3.3 (2017-03-08)
 ------------------
 * Bugfix
