@@ -6,7 +6,7 @@ install_requires = open('requirements.txt').read().split()
 
 setup(
     name='Showcase',
-    version='0.3.1',
+    version='0.3.2',
     author='James Rutherford',
     author_email='jim@jimr.org',
     description='Like SimpleHTTPServer, only worse',
