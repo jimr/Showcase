@@ -20,11 +20,7 @@
                 {% block path %}
                 {% for segment in path %}
                 {% if loop.index != 1 %} / {% endif %}
-                {% if not loop.last %}
-                <a href="{{ segment.0 }}">{{ segment.1 }}</a>
-                {% else %}
-                {{ segment.1 }}
-                {% endif %}
+                <a href="{{ segment.0 }}{% if loop.last %}?download=true" title="download{% endif %}">{{ segment.1 }}</a>
                 {% endfor %}
                 {% endblock %}
             </h4>

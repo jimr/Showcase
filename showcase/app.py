@@ -7,7 +7,7 @@ import humanize
 import mimetypes
 import os
 
-from flask import Flask, Response, abort, render_template, url_for
+from flask import Flask, Response, abort, render_template, request, url_for
 
 
 app = Flask(__name__)
@@ -60,7 +60,7 @@ def show(path=None):
     if os.path.isfile(full_path):
         content = open(full_path).read()
 
-        if _is_probably_text(full_path):
+        if _is_probably_text(full_path) and not request.args.get('download'):
             try:
                 body = content
                 content.decode('utf-8')
