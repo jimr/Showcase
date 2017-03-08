@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Browsing {% for segment in path %}/{{ segment.1 }}{% endfor %}
+Browsing {% for segment in path %}/{{ segment.1 }}{% else %}/{% endfor %}
 {% endblock %}
 
 {% block content %}
