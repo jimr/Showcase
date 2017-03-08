@@ -2,6 +2,10 @@
 History
 =======
 
+Unreleased changes
+------------------
+* Bugfix
+
 0.3.2 (2017-03-08)
 ------------------
 * Small improvement to text guessing
