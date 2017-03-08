@@ -7,7 +7,7 @@ import humanize
 import mimetypes
 import os
 
-from flask import Flask, Response, render_template, url_for
+from flask import Flask, Response, abort, render_template, url_for
 
 
 app = Flask(__name__)
@@ -46,6 +46,9 @@ def _process_path(path):
 @app.route('/<path:path>')
 def show(path=None):
     full_path = os.path.join(base, path or '')
+
+    if not os.path.exists(full_path):
+        abort(404)
 
     url = ''
     segments = []
