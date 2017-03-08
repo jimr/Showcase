@@ -15,7 +15,7 @@ Usage
 
 Not for production use, etc, but something like::
 
-    FLASK_APP=showcase.app FLASK_DEBUG=1 flask run
+    FLASK_APP=showcase.app flask run
 
 or, using ``gunicorn``::
 
@@ -23,9 +23,9 @@ or, using ``gunicorn``::
 
 Once it's running, head to http://127.0.0.1:5000 and enjoy.
 
-To browse somewhere other than where it is installed, set the ``SHOWCASE_DIR`` environment variable::
+To browse somewhere other than where you run it from, set the ``SHOWCASE_DIR`` environment variable::
 
-    SHOWCASE_DIR=$(pwd) gunicorn showcase:app -b 127.0.0.1:5000
+    SHOWCASE_DIR=/path/to/somewhere/else gunicorn showcase:app -b 127.0.0.1:5000
 
 License
 =======
