@@ -3,13 +3,24 @@
 
 import datetime
 import humanize
+import mimetypes
 import os
 
-from flask import Flask, render_template, url_for
+from flask import Flask, Response, render_template, url_for
 
 
 app = Flask(__name__)
 base = os.getenv('SHOWCASE_DIR', os.getcwd())
+
+
+def _is_probably_text(path):
+    guess, _ = mimetypes.guess_type(path)
+    if guess is None:
+        text_extensions = ['.md', '.rst']
+        return os.path.splitext(path)[1] in text_extensions
+    elif guess.startswith('text/') or guess == 'application/json':
+        return True
+    return False
 
 
 def _process_path(path):
@@ -33,9 +44,19 @@ def show(path=None):
     full_path = os.path.join(base, path or '')
 
     if os.path.isfile(full_path):
-        return render_template(
-            'file.html', fname=path, body=open(full_path).read()
-        )
+        content = open(full_path).read()
+
+        if _is_probably_text(full_path):
+            return render_template('file.html', fname=path, body=content)
+        else:
+            download_name = os.path.basename(full_path)
+            return Response(
+                content,
+                mimetype=mimetypes.guess_type(full_path)[0],
+                headers={
+                    'Content-Disposition': 'attachment; filename="{}"'.format(download_name),
+                },
+            )
 
     dirs = []
     files = []
