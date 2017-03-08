@@ -30,11 +30,11 @@ def is_probably_text(path):
 
 def process_path(path, base):
     """Given a path and a base dir, return some useful information.
-    
+
     Specifically: a URL that takes you to that path in the app, a friendly
     name, the size (if it's a file) and a humanized version of the created
     timestamp.
-    
+
     """
     url = url_for('show', path=os.path.relpath(path, base))
     name = os.path.basename(path)
