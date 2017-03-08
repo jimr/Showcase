@@ -26,6 +26,11 @@ To browse somewhere other than where you run it from, set the ``SHOWCASE_DIR`` e
 
     SHOWCASE_DIR=/path/to/somewhere/else gunicorn showcase:app -b 127.0.0.1:5000
 
+Developing
+==========
+
+To run the tests: ``python setup.py test``.
+
 License
 =======
 

@@ -5,3 +5,4 @@ Showcase.egg-info
 *.sw[op]
 *.py[cod]
 .DS_Store
+.cache

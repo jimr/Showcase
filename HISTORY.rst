@@ -2,6 +2,11 @@
 History
 =======
 
+Unreleased changes
+------------------
+* Small improvement to text guessing
+* Tests!
+
 0.3.1 (2017-03-08)
 ------------------
 * Optionally download plain text files

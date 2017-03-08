@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import chardet
 import datetime
 import humanize
 import mimetypes
@@ -14,7 +15,12 @@ def is_probably_text(path):
     guess, _ = mimetypes.guess_type(path)
     if guess is None:
         text_extensions = ['.md', '.rst']
-        return os.path.splitext(path)[1] in text_extensions
+        if os.path.splitext(path)[1] in text_extensions:
+            return True
+        else:
+            detected = chardet.detect(open(path).read())
+            if detected['confidence'] >= 0.5 and detected['encoding'] is not None:
+                return True
     elif guess.startswith('text/') or guess == 'application/json':
         return True
     return False
