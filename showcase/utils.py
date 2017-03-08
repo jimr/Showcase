@@ -13,16 +13,18 @@ from flask import url_for
 def is_probably_text(path):
     """Use some poor heurstics to see if we think the file is plain text."""
     guess, _ = mimetypes.guess_type(path)
-    if guess is None:
-        text_extensions = ['.md', '.rst']
-        if os.path.splitext(path)[1] in text_extensions:
-            return True
-        else:
-            detected = chardet.detect(open(path).read())
-            if detected['confidence'] >= 0.5 and detected['encoding'] is not None:
-                return True
-    elif guess.startswith('text/') or guess == 'application/json':
+    if guess and guess.startswith('text/') or guess == 'application/json':
         return True
+
+    text_extensions = ['.md', '.rst']
+    if os.path.splitext(path)[1] in text_extensions:
+        return True
+
+    # chardet should always be the last resort because it's slow on large files
+    detected = chardet.detect(open(path).read())
+    if detected['confidence'] >= 0.5 and detected['encoding'] is not None:
+        return True
+
     return False
 
 
