@@ -1,0 +1,3 @@
+bumpversion
+check-manifest
+flake8
