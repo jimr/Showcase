@@ -5,10 +5,7 @@ import datetime
 import humanize
 import os
 
-from urlparse import urlparse
-
 from flask import Flask, render_template, url_for
-from gunicorn.app.base import BaseApplication
 
 
 app = Flask(__name__)
