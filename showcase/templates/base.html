@@ -15,12 +15,17 @@
     </head>
     <body>
         <div class="container">
-            <h1><a href="{{ url_for('show') }}">Showcase</a></h1>
+            <h1>Showcase</h1>
+            <h4>Root: <a href="{{ url_for('show') }}">{{ base }}</a></h4>
             <h4>
                 {% block path %}
                 {% for segment in path %}
                 {% if loop.index != 1 %} / {% endif %}
-                <a href="{{ segment.0 }}{% if loop.last %}?download=true" title="download{% endif %}">{{ segment.1 }}</a>
+                {% if loop.last and is_dir %}
+                {{ segment.1 }}
+                {% else %}
+                <a href="{{ segment.0 }}{% if loop.last and not is_dir %}?download=true" title="download{% endif %}">{{ segment.1 }}</a>
+                {% endif %}
                 {% endfor %}
                 {% endblock %}
             </h4>

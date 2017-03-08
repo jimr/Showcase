@@ -2,44 +2,15 @@
 # -*- coding: utf-8 -*-
 
 import chardet
-import datetime
-import humanize
 import mimetypes
 import os
 
 from flask import Flask, Response, abort, render_template, request, url_for
+from showcase.utils import is_probably_text, process_path
 
 
 app = Flask(__name__)
 base = os.getenv('SHOWCASE_DIR', os.getcwd())
-
-
-def _is_probably_text(path):
-    guess, _ = mimetypes.guess_type(path)
-    if guess is None:
-        text_extensions = ['.md', '.rst']
-        return os.path.splitext(path)[1] in text_extensions
-    elif guess.startswith('text/') or guess == 'application/json':
-        return True
-    return False
-
-
-def _process_path(path):
-    url = url_for('show', path=os.path.relpath(path, base))
-    name = os.path.basename(path)
-
-    size = '-'
-    if os.path.isfile(path):
-        size = humanize.filesize.naturalsize(os.path.getsize(path))
-
-    try:
-        timestamp = datetime.datetime.fromtimestamp(os.path.getctime(path))
-    except:
-        timestamp = '-'
-
-    date = humanize.time.naturaltime(timestamp)
-
-    return url, name, size, date
 
 
 @app.route('/')
@@ -57,19 +28,26 @@ def show(path=None):
             url = '{}/{}'.format(url, segment)
             segments.append((url_for('show', path=url), segment))
 
+    # For files, we either display the contents as plain text in a template
+    # (possibly stupid if the file is large) or we offer a download if it seems
+    # to be binary (or the 'download' query parameter is set).
     if os.path.isfile(full_path):
         content = open(full_path).read()
 
-        if _is_probably_text(full_path) and not request.args.get('download'):
+        if is_probably_text(full_path) and not request.args.get('download'):
             try:
                 body = content
                 content.decode('utf-8')
             except:
+                # If we can't decode as utf-8 it's probably some bizarre
+                # encoding that we're going to have to try to sniff out.
+                # Unfortunately, this is slow for large files, so we only do it
+                # if we have to.
                 encoding = chardet.detect(content)['encoding']
                 body = content.decode(encoding).encode('utf-8')
 
             return render_template(
-                'file.html', path=segments, body=body,
+                'file.html', base=base, path=segments, body=body, is_dir=False,
             )
         else:
             disposition = 'attachment; filename="{}"'.format(
@@ -83,13 +61,14 @@ def show(path=None):
                 },
             )
 
-    dirs = []
-    files = []
+    contents = []
 
     # If we're not at the root, add a 'parent' dir
     if path is not None:
-        url, name, size, date = _process_path(os.path.dirname(full_path))
-        dirs.append([url, '..', size, date])
+        url, name, size, date = process_path(
+            os.path.dirname(full_path), base,
+        )
+        contents.append([url, '..', size, date])
 
     for fname in os.listdir(full_path):
         thing = os.path.join(full_path, fname)
@@ -97,13 +76,8 @@ def show(path=None):
         if fname.startswith('.') or os.path.islink(thing):
             continue
 
-        url, name, size, date = _process_path(thing)
-
-        if os.path.isfile(thing):
-            files.append([url, name, size, date])
-        elif os.path.isdir(thing):
-            dirs.append([url, name, size, date])
+        contents.append(process_path(thing, base))
 
     return render_template(
-        'dir.html', path=segments, files=files, dirs=dirs,
+        'dir.html', base=base, path=segments, contents=contents, is_dir=True,
     )

@@ -14,7 +14,7 @@ Browsing {% for segment in path %}/{{ segment.1 }}{% endfor %}
         </tr>
     </thead>
     <tbody>
-        {% for row in dirs + files %}
+        {% for row in contents %}
         <tr>
             <td><a href="{{ row.0 }}">{{ row.1 }}</a></td>
             <td>{{ row.2 }}</td>

@@ -4,7 +4,6 @@ Showcase
 
 A slightly nicer, probably less secure version of ``python -m SimpleHTTPServer``.
 
-
 Installation
 ============
 
@@ -13,7 +12,7 @@ Installation
 Usage
 =====
 
-Not for production use, etc, but something like::
+Not for production use, etc. To browse the current folder with Showcase, run::
 
     FLASK_APP=showcase.app flask run
 
