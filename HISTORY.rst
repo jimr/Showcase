@@ -2,7 +2,7 @@
 History
 =======
 
-Unreleased changes
+0.3.4 (2017-03-09)
 ------------------
 * Added a Makefile for dev tasks (because I'm forgetful)
 * Packaging tweaks
