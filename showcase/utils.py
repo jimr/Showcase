@@ -1,11 +1,11 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import chardet
 import datetime
-import humanize
 import mimetypes
 import os
+
+import chardet
+import humanize
 
 from flask import url_for
 
@@ -47,7 +47,7 @@ def process_path(path, base):
 
     try:
         timestamp = datetime.datetime.fromtimestamp(os.path.getctime(path))
-    except:
+    except OSError:
         timestamp = '-'
 
     date = humanize.time.naturaltime(timestamp)

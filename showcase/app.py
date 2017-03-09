@@ -1,9 +1,9 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import chardet
 import mimetypes
 import os
+
+import chardet
 
 from flask import Flask, Response, abort, render_template, request, url_for
 from showcase.utils import is_probably_text, process_path
@@ -38,7 +38,7 @@ def show(path=None):
             try:
                 body = content
                 content.decode('utf-8')
-            except:
+            except UnicodeDecodeError:
                 # If we can't decode as utf-8 it's probably some bizarre
                 # encoding that we're going to have to try to sniff out.
                 # Unfortunately, this is slow for large files, so we only do it
@@ -65,7 +65,7 @@ def show(path=None):
 
     # If we're not at the root, add a 'parent' dir
     if path is not None:
-        url, name, size, date = process_path(
+        url, _, size, date = process_path(
             os.path.dirname(full_path), base,
         )
         contents.append([url, '..', size, date])

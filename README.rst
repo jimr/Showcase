@@ -18,13 +18,13 @@ Not for production use, etc. To browse the current folder with Showcase, run::
 
 or, using ``gunicorn``::
 
-    gunicorn showcase:app -b 127.0.0.1:5000
+    gunicorn showcase.app:app -b 127.0.0.1:5000
 
 Once it's running, head to http://127.0.0.1:5000 and enjoy.
 
 To browse somewhere other than where you run it from, set the ``SHOWCASE_DIR`` environment variable::
 
-    SHOWCASE_DIR=/path/to/somewhere/else gunicorn showcase:app -b 127.0.0.1:5000
+    SHOWCASE_DIR=/path/to/somewhere/else gunicorn showcase.app:app -b 127.0.0.1:5000
 
 Developing
 ==========
