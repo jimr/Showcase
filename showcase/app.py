@@ -10,7 +10,7 @@ from showcase.utils import is_probably_text, process_path
 
 
 app = Flask(__name__)
-base = os.getenv('SHOWCASE_DIR', os.getcwd())
+base = os.path.abspath(os.getenv('SHOWCASE_DIR', os.getcwd()))
 
 
 @app.route('/')
