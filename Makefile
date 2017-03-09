@@ -1,6 +1,14 @@
-check:
-	python setup.py test
-	check-manifest --ignore dev-requirements.txt
+clean:
+	rm -rf build
+	rm -rf dist
+	rm -rf Showcase.egg-info
 
-publish:
-	python setup.py test sdist upload
+check:
+	check-manifest --ignore dev-requirements.txt,Makefile
+	python setup.py test
+
+build: clean check
+	python setup.py sdist bdist_wheel
+
+publish: build
+	twine upload dist/*
