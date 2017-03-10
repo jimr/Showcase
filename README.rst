@@ -2,6 +2,14 @@
 Showcase
 ========
 
+.. image:: https://img.shields.io/pypi/v/Showcase.svg
+    :target: https://pypi.python.org/pypi/Showcase
+    :alt: Latest Release
+
+.. image:: https://pyup.io/repos/github/jimr/Showcase/shield.svg
+    :target: https://pyup.io/repos/github/jimr/Showcase/
+    :alt: Updates
+
 A slightly nicer, probably less secure version of ``python -m SimpleHTTPServer``.
 
 Installation
