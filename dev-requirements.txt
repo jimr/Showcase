@@ -1,5 +1,5 @@
 bumpversion==0.6.0
-check-manifest==0.46
+check-manifest==0.49
 flake8==3.9.2
 hacking==4.1.0
 twine==3.4.1
